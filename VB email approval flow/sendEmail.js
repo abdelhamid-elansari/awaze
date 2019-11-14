@@ -30,10 +30,10 @@ define(['N/search', 'N/record', 'N/email', 'N/log', 'N/file', 'N/format', './und
                 mergeDataObj.oldNextApprover = context.oldRecord.getValue({fieldId: 'custbody_aw_nextapprovervb'});
                 mergeDataObj.approvalStatus = context.newRecord.getValue({fieldId: 'custbody_aw_approvalstatusvb'});
                 mergeDataObj.project = vendoBillRecord.getText({fieldId: 'custbody_aw_projectheader'});
-                mergeDataObj.createdBy = context.newRecord.getValue({fieldId: 'custbody_aw_createdby'});
+                mergeDataObj.createdBy = context.newRecord.getValue({fieldId: 'createdby'});
                 //mergeDataObj.emailApprovalRoutingServiceLink = 'https://debugger.eu1.netsuite.com/app/site/hosting/scriptlet.nl?script=438&deploy=1' +
-                //mergeDataObj.emailApprovalRoutingServiceLink = 'https://5104205.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=346&deploy=2&compid=5104205&h=96696bdf43d2dce2bcf5' +//PROD
-                mergeDataObj.emailApprovalRoutingServiceLink = 'https://5104205-sb1.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=346&deploy=2&compid=5104205_SB1&h=1a83ecbe303065e189f8' + //SB
+                mergeDataObj.emailApprovalRoutingServiceLink = 'https://5104205.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=346&deploy=2&compid=5104205&h=96696bdf43d2dce2bcf5' +//PROD
+                //mergeDataObj.emailApprovalRoutingServiceLink = 'https://5104205-sb1.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=346&deploy=2&compid=5104205_SB1&h=1a83ecbe303065e189f8' + //SB
                     '&approverId=' + mergeDataObj.nextApprover +
                     '&transactionId=' + mergeDataObj.id;
                 mergeDataObj.trandate = format.format({
@@ -57,6 +57,12 @@ define(['N/search', 'N/record', 'N/email', 'N/log', 'N/file', 'N/format', './und
                     log.audit({
                         title: 'sendEmail - afterSubmit',
                         details: 'nextApprover is changed going to send email'
+                    });
+
+                    mergeDataObj.createdBy = _getCreatedBy(context.newRecord.id); //TODO is it correct?
+                    log.audit({
+                        title: 'sendEmail - afterSubmit - createdBy',
+                        details: 'createdBy: ' + mergeDataObj.createdBy
                     });
 
                     var senderId = mergeDataObj.createdBy; //TODO is it correct?
@@ -120,6 +126,25 @@ define(['N/search', 'N/record', 'N/email', 'N/log', 'N/file', 'N/format', './und
             });
             log.debug("vendorbillSearchObj attacchedFielsId",JSON.stringify(attacchedFielsId));
             return attacchedFielsId;
+        }
+        function _getCreatedBy(vendoBillId) {
+            var createdBy = [];
+            var currentVendorbillAttachedFilesSrc = search.create({
+                type: "vendorbill",
+                filters:
+                    [["type","anyof","VendBill"], "AND", ["internalidnumber","equalto",vendoBillId], "AND", ["mainline","is","T"]],
+                columns: [search.createColumn({name: "createdby"})]
+            });
+            var searchResultCount = currentVendorbillAttachedFilesSrc.runPaged().count;
+            log.debug("createdBySearchObj result count",searchResultCount);
+            var resultSet = currentVendorbillAttachedFilesSrc.run();
+            log.debug("createdBySearchObj resultSet",JSON.stringify(resultSet));
+            currentVendorbillAttachedFilesSrc.run().each(function(result){
+                createdBy = result.getValue({name: "createdby"});
+                return true;
+            });
+            log.debug("vendorbillSearchObj createdBy",createdBy);
+            return createdBy;
         }
         function _formatNumber(params) {
                 var number = params.number;         // numero da formattare
