@@ -31,11 +31,13 @@ define(['N/search', 'N/record', 'N/email', 'N/log', 'N/file', 'N/format', './und
                 mergeDataObj.approvalStatus = context.newRecord.getValue({fieldId: 'custbody_aw_approvalstatusvb'});
                 mergeDataObj.project = vendoBillRecord.getText({fieldId: 'custbody_aw_projectheader'});
                 mergeDataObj.createdBy = context.newRecord.getValue({fieldId: 'createdby'});
+                mergeDataObj.expenses = [];
                 //mergeDataObj.emailApprovalRoutingServiceLink = 'https://debugger.eu1.netsuite.com/app/site/hosting/scriptlet.nl?script=438&deploy=1' +
-                mergeDataObj.emailApprovalRoutingServiceLink = 'https://5104205.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=346&deploy=2&compid=5104205&h=96696bdf43d2dce2bcf5' +//PROD
                 //mergeDataObj.emailApprovalRoutingServiceLink = 'https://5104205-sb1.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=346&deploy=2&compid=5104205_SB1&h=1a83ecbe303065e189f8' + //SB
+                mergeDataObj.emailApprovalRoutingServiceLink = 'https://5104205.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=346&deploy=2&compid=5104205&h=96696bdf43d2dce2bcf5' +//PROD
                     '&approverId=' + mergeDataObj.nextApprover +
                     '&transactionId=' + mergeDataObj.id;
+
                 mergeDataObj.trandate = format.format({
                     value: mergeDataObj.trandate,
                     type: format.Type.DATE
@@ -46,7 +48,19 @@ define(['N/search', 'N/record', 'N/email', 'N/log', 'N/file', 'N/format', './und
                     applicaSepMigliaia: '.'
                 });
 
+                var expensesCount = vendoBillRecord.getLineCount({"sublistId": "expense"});
+                for(var iCount = 0; iCount < expensesCount; iCount++){
+                     context.newRecord.getSublistValue({ sublistId: 'expense', fieldId: 'account', line: iCount });
 
+                    mergeDataObj.expenses.push({
+                        account : vendoBillRecord.getSublistText({ sublistId: 'expense', fieldId: 'account', line: iCount }),
+                        amount : vendoBillRecord.getSublistText({ sublistId: 'expense', fieldId: 'amount', line: iCount }),
+                        grossamt : vendoBillRecord.getSublistText({ sublistId: 'expense', fieldId: 'grossamt', line: iCount }),
+                        taxcode : vendoBillRecord.getSublistText({ sublistId: 'expense', fieldId: 'taxcode', line: iCount }),
+                        taxrate : vendoBillRecord.getSublistText({ sublistId: 'expense', fieldId: 'taxrate1', line: iCount }),
+                        taxamount : vendoBillRecord.getSublistText({ sublistId: 'expense', fieldId: 'tax1amt', line: iCount }),
+                    });
+                }
                 log.audit({
                     title: 'sendEmail - afterSubmit - currentRecordData',
                     details: mergeDataObj
@@ -79,7 +93,7 @@ define(['N/search', 'N/record', 'N/email', 'N/log', 'N/file', 'N/format', './und
                     var templateFileObj = file.load({
                         id: 1555 // TODO search template file by name
                     });
-
+                                                       
                     var buildListHtmlLayout = _.template(templateFileObj.getContents());
                     var templateData = {};
                     templateData.templateData = mergeDataObj;
@@ -181,7 +195,7 @@ define(['N/search', 'N/record', 'N/email', 'N/log', 'N/file', 'N/format', './und
                         parteIntera = parteIntera.replace(regexp, '$1' + sepMigliaia + '$2');
                     }
                 }
-                // ----------------------------
+                // ----------------------------WORKORDERCOMPLETION
                 return parteIntera + parteDecimale;
             }
         return {
