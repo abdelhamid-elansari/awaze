@@ -33,10 +33,11 @@ define(['N/search', 'N/record', 'N/email', 'N/log', 'N/file', 'N/format', './und
                 mergeDataObj.createdBy = context.newRecord.getValue({fieldId: 'createdby'});
                 mergeDataObj.expenses = [];
                 //mergeDataObj.emailApprovalRoutingServiceLink = 'https://debugger.eu1.netsuite.com/app/site/hosting/scriptlet.nl?script=438&deploy=1' +
-                //mergeDataObj.emailApprovalRoutingServiceLink = 'https://5104205-sb1.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=346&deploy=2&compid=5104205_SB1&h=1a83ecbe303065e189f8' + //SB
-                mergeDataObj.emailApprovalRoutingServiceLink = 'https://5104205.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=346&deploy=2&compid=5104205&h=96696bdf43d2dce2bcf5' +//PROD
+                mergeDataObj.emailApprovalRoutingServiceLink = 'https://5104205-sb1.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=346&deploy=2&compid=5104205_SB1&h=1a83ecbe303065e189f8' + //SB
+                //mergeDataObj.emailApprovalRoutingServiceLink = 'https://5104205.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=346&deploy=2&compid=5104205&h=96696bdf43d2dce2bcf5' +//PROD
                     '&approverId=' + mergeDataObj.nextApprover +
-                    '&transactionId=' + mergeDataObj.id;
+                    '&transactionId=' + mergeDataObj.id+
+                    '&transactionType=' + context.newRecord.type;
 
                 mergeDataObj.trandate = format.format({
                     value: mergeDataObj.trandate,
