@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+
+        .card {
+            position: relative;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 0.25rem;
+        }
+
+        .card > hr {
+            margin-right: 0;
+            margin-left: 0;
+        }
+
+        .card > .list-group:first-child .list-group-item:first-child {
+            border-top-left-radius: 0.25rem;
+            border-top-right-radius: 0.25rem;
+        }
+
+        .card > .list-group:last-child .list-group-item:last-child {
+            border-bottom-right-radius: 0.25rem;
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .card-body {
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            padding: 1.25rem;
+        }
+
+        .card-title {
+            margin-bottom: 0.75rem;
+        }
+
+        .card-subtitle {
+            margin-top: -0.375rem;
+            margin-bottom: 0;
+        }
+
+        .card-text:last-child {
+            margin-bottom: 0;
+        }
+
+        .card-link:hover {
+            text-decoration: none;
+        }
+
+        .card-link + .card-link {
+            margin-left: 1.25rem;
+        }
+
+        .card-header {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 0;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+
+        .card-header:first-child {
+            border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+        }
+
+        .card-header + .list-group .list-group-item:first-child {
+            border-top: 0;
+        }
+
+        .card-footer {
+            padding: 0.75rem 1.25rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-top: 1px solid rgba(0, 0, 0, 0.125);
+        }
+
+        .card-footer:last-child {
+            border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);
+        }
+
+        .card-header-tabs {
+            margin-right: -0.625rem;
+            margin-bottom: -0.75rem;
+            margin-left: -0.625rem;
+            border-bottom: 0;
+        }
+
+        .card-header-pills {
+            margin-right: -0.625rem;
+            margin-left: -0.625rem;
+        }
+
+        .card-img-overlay {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 1.25rem;
+        }
+
+        .card-img {
+            width: 100%;
+            border-radius: calc(0.25rem - 1px);
+        }
+
+        .card-img-top {
+            width: 100%;
+            border-top-left-radius: calc(0.25rem - 1px);
+            border-top-right-radius: calc(0.25rem - 1px);
+        }
+
+        .card-img-bottom {
+            width: 100%;
+            border-bottom-right-radius: calc(0.25rem - 1px);
+            border-bottom-left-radius: calc(0.25rem - 1px);
+        }
+
+        .card-deck {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+
+        .card-deck .card {
+            margin-bottom: 15px;
+        }
+
+        @media (min-width: 576px) {
+            .card-deck {
+                -ms-flex-flow: row wrap;
+                flex-flow: row wrap;
+                margin-right: -15px;
+                margin-left: -15px;
+            }
+            .card-deck .card {
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex: 1 0 0%;
+                flex: 1 0 0%;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                margin-right: 15px;
+                margin-bottom: 0;
+                margin-left: 15px;
+            }
+        }
+
+        .card-group {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+
+        .card-group > .card {
+            margin-bottom: 15px;
+        }
+
+        @media (min-width: 576px) {
+            .card-group {
+                -ms-flex-flow: row wrap;
+                flex-flow: row wrap;
+            }
+            .card-group > .card {
+                -ms-flex: 1 0 0%;
+                flex: 1 0 0%;
+                margin-bottom: 0;
+            }
+            .card-group > .card + .card {
+                margin-left: 0;
+                border-left: 0;
+            }
+            .card-group > .card:not(:last-child) {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+            .card-group > .card:not(:last-child) .card-img-top,
+            .card-group > .card:not(:last-child) .card-header {
+                border-top-right-radius: 0;
+            }
+            .card-group > .card:not(:last-child) .card-img-bottom,
+            .card-group > .card:not(:last-child) .card-footer {
+                border-bottom-right-radius: 0;
+            }
+            .card-group > .card:not(:first-child) {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+            .card-group > .card:not(:first-child) .card-img-top,
+            .card-group > .card:not(:first-child) .card-header {
+                border-top-left-radius: 0;
+            }
+            .card-group > .card:not(:first-child) .card-img-bottom,
+            .card-group > .card:not(:first-child) .card-footer {
+                border-bottom-left-radius: 0;
+            }
+        }
+
+        .card-columns .card {
+            margin-bottom: 0.75rem;
+        }
+
+        @media (min-width: 576px) {
+            .card-columns {
+                -webkit-column-count: 3;
+                -moz-column-count: 3;
+                column-count: 3;
+                -webkit-column-gap: 1.25rem;
+                -moz-column-gap: 1.25rem;
+                column-gap: 1.25rem;
+                orphans: 1;
+                widows: 1;
+            }
+            .card-columns .card {
+                display: inline-block;
+                width: 100%;
+            }
+        }
+
+        .accordion > .card {
+            overflow: hidden;
+        }
+
+        .accordion > .card:not(:first-of-type) .card-header:first-child {
+            border-radius: 0;
+        }
+
+        .accordion > .card:not(:first-of-type):not(:last-of-type) {
+            border-bottom: 0;
+            border-radius: 0;
+        }
+
+        .accordion > .card:first-of-type {
+            border-bottom: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .accordion > .card:last-of-type {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .accordion > .card .card-header {
+            margin-bottom: -1px;
+        }
+       .btn-primary{box-sizing: border-box; margin: 0; font-family: inherit; overflow: visible; text-transform: none; display: inline-block; font-weight: 400; text-align: center; white-space: nowrap; vertical-align: middle; user-select: none; border: 1px solid transparent; padding: .375rem .75rem; font-size: 1rem; line-height: 1.5; border-radius: .25rem; transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out; color: #fff; background-color: #007bff; border-color: #007bff; -webkit-appearance: button; cursor: pointer;}
+       .btn-secondary{box-sizing: border-box; margin: 0; font-family: inherit; overflow: visible; text-transform: none; display: inline-block; font-weight: 400; text-align: center; white-space: nowrap; vertical-align: middle; user-select: none; border: 1px solid transparent; padding: .375rem .75rem; font-size: 1rem; line-height: 1.5; border-radius: .25rem; transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out; -webkit-appearance: button; text-decoration: none; cursor: pointer; background-image: none; color: #fff; background-color: #545b62; border-color: #4e555b;}
+
+    </style>
+    <script>
+        function message_AB(){
+            alert('my message or future action');
+        }
+    </script>
+</head>
+
+<body >
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="margin:0 auto" role="presentation">
+    <tbody>
+    <tr>
+        <td>
+            <div class="card" style="width: 100%;">
+                <div class="card-body">
+                    <p style="font-size: 14px;">Dear <%=templateData.nextApprover_text%>,<p/>
+                    <p style="font-size: 14px;">A purchase order has been received that requires your approval.</p>
+                    <p style="font-size: 14px;">Vendor name: <strong><%=templateData.entity_text%></strong></p>
+                    <p style="font-size: 14px;">Reference number: <strong>#<%=templateData.tranid%></strong></p>
+                    <%if(templateData.project){%>
+                    <p style="font-size: 14px;">Project: <strong><%=templateData.project%></strong></p>
+                    <%}%>
+                    <p style="font-size: 14px;">Department: <strong><%=templateData.department_text%></strong></p>
+                    <p style="font-size: 14px;">Account Code: <strong>See below for a breakdown of the P&L coding</strong></p>
+                    <p style="font-size: 14px;">Subsidiary: <strong><%=templateData.subsidiary_text%></strong></p>
+                    <p style="font-size: 14px;">Gross Amount: <strong><%=templateData.amount%> <%=templateData.currency_text%></strong></p>
+
+                    <table cellspacing="0" cellpadding="0"  role="presentation" style="font-family: Verdana,sans-serif;font-size: 14px;line-height: 1.5;color: #000!important;box-sizing: inherit;border-collapse: collapse;border-spacing: 0;width: 100%;display: table;border: 1px solid #ccc;margin: 20px 0;">
+                        <tr>
+                            <th style="padding:5px;display:table-cell;text-align:middle;vertical-align:middle;border-bottom:1px solid #ddd;width:70%">ACCOUNT</th>
+                            <th style="padding:5px;display:table-cell;text-align:middle;vertical-align:middle;border-bottom:1px solid #ddd;width:15%">AMOUNT</th>
+                            <th style="padding:5px;display:table-cell;text-align:middle;vertical-align:middle;border-bottom:1px solid #ddd;width:15%">GROSS AMT</th>
+                        </tr>
+                        <%_.each(templateData.expenses, function(currentLine, index){
+                        var backgroundcolor = (index%2) == 0? '#f1f1f1' :  '#fff' %>
+                        <tr style="background-color: <%=backgroundcolor%>;">
+                           <td style="padding: 8px;display: table-cell;text-align: left;vertical-align: middle; border-bottom: 1px solid #ddd;width: 70%;"><%=currentLine.account%></td>
+                           <td style="padding: 8px;display: table-cell;text-align: right;vertical-align: middle; border-bottom: 1px solid #ddd;width: 15%;"><%=currentLine.amount%> <%=templateData.currency_text%></td>
+                           <td style="padding: 8px;display: table-cell;text-align: right;vertical-align: middle; border-bottom: 1px solid #ddd;width: 15%;"><%=currentLine.grossamt%> <%=templateData.currency_text%></td>
+                        </tr>
+                        <%})%>
+                    </table>
+
+                   <!--     <a role="button" class="btn btn-primary" style="color: #ffffff; text-decoration: none;" href="<%=templateData.emailApprovalRoutingServiceLink + '&action=APPROVE'%>">Approve</a>
+                        <a role="button" class="btn btn-secondary" style="color: #ffffff; text-decoration: none;" href="<%=templateData.emailApprovalRoutingServiceLink + '&action=REJECT'%>">Reject</a>-->
+                    <span style="font-size: 14px;">By using the buttons below, please either Approve or Reject, including an explanation for the rejection.  If the buttons are unavailable, please use the following links (
+                        <a href="<%=templateData.emailApprovalRoutingServiceLink + '&action=APPROVE'%>">APPROVE</a> or
+                        <a href="<%=templateData.emailApprovalRoutingServiceLink + '&action=REJECT'%>">REJECT</a>)
+                    </span>
+                    <table cellspacing="0" cellpadding="0" border="0" role="presentation">
+                        <tr>
+                            <td width="100px" style="padding: 20px 0 20px 20px;">
+
+                                <!-- your first table : BEGIN -->
+
+                                <table cellpadding="0" cellmargin="0" border="0" height="40px" width="100px" style="border-collapse: collapse; border:5px solid #007bff; display: inline-table;">
+                                    <tr>
+                                        <td bgcolor="#007bff" valign="middle" align="center" width="100px">
+                                            <div style="font-size: 18px; color: #ffffff; line-height: 1; margin: 0; padding: 0; mso-table-lspace:0; mso-table-rspace:0;">
+                                                <a href="<%=templateData.emailApprovalRoutingServiceLink + '&action=APPROVE'%>" style="text-decoration: none; color: #ffffff; border: 0; font-family: Arial, arial, sans-serif; mso-table-lspace:0; mso-table-rspace:0;" border="0">Approve</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <!-- your first table : END -->
+
+                            </td>
+                            <td width="120px" style="padding-left:20px;">
+
+                                <!-- your second table : BEGIN -->
+                                <table cellpadding="0" cellmargin="0" border="0" height="40px" width="100px" style="border-collapse: collapse; border:5px solid #545b62; display: inline-table;">
+                                    <tr>
+                                        <td bgcolor="#545b62" valign="middle" align="center" width="100px">
+                                            <div style="font-size: 18px; color: #ffffff; line-height: 1; margin: 0; padding: 0; mso-table-lspace:0; mso-table-rspace:0;">
+                                                <a href="<%=templateData.emailApprovalRoutingServiceLink + '&action=REJECT'%>" style="text-decoration: none; color: #ffffff; border: 0; font-family: Arial, arial, sans-serif; mso-table-lspace:0; mso-table-rspace:0;" border="0"> Reject </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <!-- your second table : END -->
+                            </td>
+                        </tr>
+                    </table>
+                    </p>
+                    <p style="font-size: 14px;">Kind regards,<br/>Purchase Ledger team</p>
+                    <hr/>
+                    <img src="https://5104205.app.netsuite.com/core/media/media.nl?id=2298&c=5104205&h=1ec7c79f33a678e4a60a" width="20%" height="auto">
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
+

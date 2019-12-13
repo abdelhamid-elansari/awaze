@@ -33,9 +33,9 @@ define(['N/search', 'N/record', 'N/log'], function (search, record, log) {
             return false;
         });
         var nextApproverFiledId;
-        if(newRecord.type == 'vendorbill'){
+        if(newRecord.type == 'vendorbill' || newRecord.type == 'vendorcredit'){
             nextApproverFiledId = 'custbody_aw_nextapprovervb'
-        }else if(newRecord.type == 'purchaseorder' || newRecord.type == 'vendorcredit'){
+        }else if(newRecord.type == 'purchaseorder' ){
             nextApproverFiledId = 'nextapprover'
         }
         newRecord.setValue({

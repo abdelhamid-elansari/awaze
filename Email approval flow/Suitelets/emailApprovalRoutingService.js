@@ -27,27 +27,38 @@ define(['N/search', 'N/ui/serverWidget','N/record', 'N/email', 'N/log', 'N/file'
                         details: context.request.parameters
                     });
 
-                    var vendoBillRecord = record.load({type: transactionType, id: transactionId});
-                    var nextApprover = vendoBillRecord.getValue({
-                        fieldId: 'custbody_aw_nextapprovervb'
-                    });
+                    var vendoBillRecord = record.load({type: transactionType, id: transactionId, isDynamic : true});
+
+                    var nextApprover = null;
+                    if(transactionType === 'purchaseorder') {
+
+                        nextApprover = vendoBillRecord.getValue({
+                            fieldId: 'nextapprover'
+                        });
+                    } else {
+                        nextApprover = vendoBillRecord.getValue({
+                            fieldId: 'custbody_aw_nextapprovervb'
+                        });
+                    }
+
                     if (approverId == nextApprover) {
                         if (action == 'APPROVE') {
                             vendoBillRecord.setValue({
                                 fieldId: 'custbody_aw_approve_emailaction',
                                 value: true,
+                                ignoreFieldChange : true
                             });
-
-                            vendoBillRecord.save();
+                            vendoBillRecord.save({ignoreMandatoryFields : true});
                             context.response.write('<div style="font-size: 1rem; font-weight: 400; line-height: 1.5; text-align: left; box-sizing: border-box; position: relative; padding: .75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: .25rem; color: #155724; background-color: #d4edda; border-color: #c3e6cb; margin-top: 1rem;">' +
-                                                    'The Invoice has been approved, depending on your approval limit and the value of the invoice; it will either be ready for payment or sent to the next approver for approval.' +
-                                                    '</div>');
+                                'The Invoice has been approved, depending on your approval limit and the value of the invoice; it will either be ready for payment or sent to the next approver for approval.' +
+                                '</div>');
                         } else if (action == 'REJECT') {
 
                             vendoBillRecord.setValue({
                                 fieldId: 'custbody_aw_reject_emailaction',
                                 value: true,
                             });
+
                             vendoBillRecord.save();
                             var form = ui.createForm({title: 'Netsuite e-mail approval flow response'});
                             var htmlMessage = form.addField({
@@ -59,8 +70,6 @@ define(['N/search', 'N/ui/serverWidget','N/record', 'N/email', 'N/log', 'N/file'
                             htmlMessage.defaultValue = '<div style="font-size: 1rem; font-weight: 400; line-height: 1.5; text-align: left; box-sizing: border-box; position: relative; padding: .75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: .25rem; color: #155724; background-color: #d4edda; border-color: #c3e6cb; margin-top: 1rem;">' +
                                 'The transaction has been correctly rejected, please enter a rejection reason' +
                                 '</div>';
-
-
                             var reject_reasons_field = form.addField({
                                 id: 'reject_reasons',
                                 type: ui.FieldType.TEXTAREA,
@@ -78,7 +87,7 @@ define(['N/search', 'N/ui/serverWidget','N/record', 'N/email', 'N/log', 'N/file'
                                 displayType: ui.FieldDisplayType.HIDDEN
                             });
                             additionalData.defaultValue = JSON.stringify({approverId: approverId,
-                                                            transactionId: transactionId});
+                                transactionId: transactionId});
                             form.addSubmitButton({
                                 label: 'Save'
                             });
@@ -119,12 +128,12 @@ define(['N/search', 'N/ui/serverWidget','N/record', 'N/email', 'N/log', 'N/file'
             }catch (exc) {
                 var errorMsg = 'An unexpected error has occurred, details: ' +exc.toString() + ' on line: ' + exc.lineNumber || 'unknown. Please contact support'
                 context.response.write('<div style="font-size: 1rem; font-weight: 400; line-height: 1.5; text-align: left; box-sizing: border-box; position: relative; padding: .75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: .25rem; color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; margin-top: 1rem;" role="alert">\n' +
-                                        errorMsg +
-                                        '</div>');
+                    errorMsg +
+                    '</div>');
             }
         }
-    return {
-        onRequest: execute,
-    };
-});
+        return {
+            onRequest: execute,
+        };
+    });
 
