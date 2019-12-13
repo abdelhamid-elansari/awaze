@@ -280,9 +280,26 @@
                     <p style="font-size: 14px;">Project: <strong><%=templateData.project%></strong></p>
                     <%}%>
                     <p style="font-size: 14px;">Department: <strong><%=templateData.department_text%></strong></p>
-                    <p style="font-size: 14px;">Account Code: <strong><%=templateData.account_text%></strong></p>
+                    <p style="font-size: 14px;">Account Code: <strong>See below for a breakdown of the P&L coding</strong></p>
                     <p style="font-size: 14px;">Subsidiary: <strong><%=templateData.subsidiary_text%></strong></p>
                     <p style="font-size: 14px;">Gross Amount: <strong><%=templateData.amount%> <%=templateData.currency_text%></strong></p>
+
+                    <table cellspacing="0" cellpadding="0"  role="presentation" style="font-family: Verdana,sans-serif;font-size: 14px;line-height: 1.5;color: #000!important;box-sizing: inherit;border-collapse: collapse;border-spacing: 0;width: 100%;display: table;border: 1px solid #ccc;margin: 20px 0;">
+                        <tr>
+                            <th style="padding:5px;display:table-cell;text-align:middle;vertical-align:middle;border-bottom:1px solid #ddd;width:70%">ACCOUNT</th>
+                            <th style="padding:5px;display:table-cell;text-align:middle;vertical-align:middle;border-bottom:1px solid #ddd;width:15%">AMOUNT</th>
+                            <th style="padding:5px;display:table-cell;text-align:middle;vertical-align:middle;border-bottom:1px solid #ddd;width:15%">GROSS AMT</th>
+                        </tr>
+                        <%_.each(templateData.expenses, function(currentLine, index){
+                        var backgroundcolor = (index%2) == 0? '#f1f1f1' :  '#fff' %>
+                        <tr style="background-color: <%=backgroundcolor%>;">
+                           <td style="padding: 8px;display: table-cell;text-align: left;vertical-align: middle; border-bottom: 1px solid #ddd;width: 70%;"><%=currentLine.account%></td>
+                           <td style="padding: 8px;display: table-cell;text-align: right;vertical-align: middle; border-bottom: 1px solid #ddd;width: 15%;"><%=currentLine.amount%> <%=templateData.currency_text%></td>
+                           <td style="padding: 8px;display: table-cell;text-align: right;vertical-align: middle; border-bottom: 1px solid #ddd;width: 15%;"><%=currentLine.grossamt%> <%=templateData.currency_text%></td>
+                        </tr>
+                        <%})%>
+                    </table>
+
                    <!--     <a role="button" class="btn btn-primary" style="color: #ffffff; text-decoration: none;" href="<%=templateData.emailApprovalRoutingServiceLink + '&action=APPROVE'%>">Approve</a>
                         <a role="button" class="btn btn-secondary" style="color: #ffffff; text-decoration: none;" href="<%=templateData.emailApprovalRoutingServiceLink + '&action=REJECT'%>">Reject</a>-->
                     <span style="font-size: 14px;">By using the buttons below, please either Approve or Reject, including an explanation for the rejection.  If the buttons are unavailable, please use the following links (

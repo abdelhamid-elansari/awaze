@@ -8,8 +8,8 @@ var SEARCHMODULE, UIMODULE;
  */
 
 //********************** MAIN FUNCTION **********************
-define(['N/search', 'N/ui/serverWidget','N/record', 'N/email', 'N/log', 'N/file', './underscore-min-1.8.3.js'],
-    function runSuitelet(search, ui, record, email, log, file){
+define(['N/search', 'N/ui/serverWidget','N/record', 'N/email', 'N/log', 'N/file', 'N/action', './underscore-min-1.8.3.js'],
+    function runSuitelet(search, ui, record, email, log, file, action){
         function execute(context){
             //SEARCHMODULE.load(123);
             log.debug({
@@ -18,15 +18,16 @@ define(['N/search', 'N/ui/serverWidget','N/record', 'N/email', 'N/log', 'N/file'
             });
             try {
                 if (context.request.method == 'GET') {
-                    var vendorBillId = context.request.parameters['transactionId'];
+                    var transactionId = context.request.parameters['transactionId'];
                     var action = context.request.parameters['action'];
                     var approverId = context.request.parameters['approverId'];
+                    var transactionType = context.request.parameters['transactionType'];
                     log.debug({
                         title: 'context params',
                         details: context.request.parameters
                     });
 
-                    var vendoBillRecord = record.load({type: record.Type.VENDOR_BILL, id: vendorBillId});
+                    var vendoBillRecord = record.load({type: transactionType, id: transactionId});
                     var nextApprover = vendoBillRecord.getValue({
                         fieldId: 'custbody_aw_nextapprovervb'
                     });
@@ -77,7 +78,7 @@ define(['N/search', 'N/ui/serverWidget','N/record', 'N/email', 'N/log', 'N/file'
                                 displayType: ui.FieldDisplayType.HIDDEN
                             });
                             additionalData.defaultValue = JSON.stringify({approverId: approverId,
-                                                            vendorBillId: vendorBillId});
+                                                            transactionId: transactionId});
                             form.addSubmitButton({
                                 label: 'Save'
                             });
@@ -101,15 +102,15 @@ define(['N/search', 'N/ui/serverWidget','N/record', 'N/email', 'N/log', 'N/file'
                     });
                     var request = context.request;
                     var additionaldata = JSON.parse(request.parameters['additionaldata']);
-                    var vendorBillId = additionaldata.vendorBillId;
+                    var transactionId = additionaldata.transactionId;
                     var approverId = additionaldata.approverId;
                     var rejectReasons = request.parameters.reject_reasons;
                     var rejectReasonsRec = record.create({type: 'customrecord_aw_rejectionreason'});
 
                     rejectReasonsRec.setValue({fieldId: 'custrecord_aw_rejectionreason', value: rejectReasons});
-                    rejectReasonsRec.setValue({fieldId: 'custrecord1', value: vendorBillId});
+                    rejectReasonsRec.setValue({fieldId: 'custrecord1', value: transactionId});
                     rejectReasonsRec.setValue({fieldId: 'custrecord_aw_approver', value: approverId});
-                    var rejectReasonsRecId = rejectReasonsRec.save();
+                    rejectReasonsRec.save();
                     context.response.write('<div style="font-size: 1rem; font-weight: 400; line-height: 1.5; text-align: left; box-sizing: border-box; position: relative; padding: .75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: .25rem; color: #155724; background-color: #d4edda; border-color: #c3e6cb; margin-top: 1rem;">' +
                         'The rejection reason has been correctly saved'+
                         '</div>');
