@@ -25,15 +25,21 @@ define(['N/search', 'N/record', 'N/log'], function (search, record, log) {
         });
         var nextApproverMatrixSrcLength = nextApproverMatrixSrc.runPaged().count;
         if(nextApproverMatrixSrcLength != 1){
-            throw  'ERROR: next approver matrix search, filters (location: ' + location + ', departement: ' + departement+'), found ' + nextApproverMatrixSrcLength + ' results instead of 1'
+            throw  'There is no combination set up for that location and department. Could you please create it first?'
         }
         var nextApprover;
         nextApproverMatrixSrc.run().each(function(result) {
             nextApprover = result.getValue('custrecord_aw_approvermatrix_approver');
             return false;
         });
+        var nextApproverFiledId;
+        if(newRecord.type == 'vendorbill'){
+            nextApproverFiledId = 'custbody_aw_nextapprovervb'
+        }else if(newRecord.type == 'purchaseorder' || newRecord.type == 'vendorcredit'){
+            nextApproverFiledId = 'nextapprover'
+        }
         newRecord.setValue({
-            fieldId: 'custbody_aw_nextapprovervb',
+            fieldId: nextApproverFiledId,
             value: nextApprover,
         });
 
