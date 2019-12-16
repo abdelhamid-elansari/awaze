@@ -161,11 +161,19 @@ define(['N/search', 'N/record', 'N/log', 'N/format', 'N/url'], function (search,
 							id: result.getValue('internalid'),
 							columns: ['tranid']
 						});
+                        log.debug({
+                            title: 'Bill transaction number',
+                            details: refNumBill["tranid"]
+                        });
 
-						log.debug({
-							title: 'Bill transaction number',
-							details: refNumBill["tranid"]
+						var vendorInternalId=result.getValue({
+                                name: "internalid",
+                                join: "vendor"
 						});
+                        log.debug({
+                            title: 'Vedor internal id',
+                            details: vendorInternalId
+                        });
 
 
 					/*******Step 5: Bill Payment Creation******/
@@ -174,7 +182,7 @@ define(['N/search', 'N/record', 'N/log', 'N/format', 'N/url'], function (search,
 						var billPayment = record.create({
 							type : record.Type.VENDOR_PAYMENT,
 							defaultValues: {
-							entity: 9897
+							entity: vendorInternalId
 							},
 							isDynamic : true
 						});
